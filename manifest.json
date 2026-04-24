@@ -1,14 +1,11 @@
 {
   "name": "RS Connect",
-  "short_name": "RS",
-  "description": "Sistema de gerenciamento de serviços, clientes e veículos.",
+  "short_name": "RS Connect",
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#020617",
+  "background_color": "#ffffff",
   "theme_color": "#0ea5e9",
-  "orientation": "portrait-primary",
-
   "icons": [
     {
       "src": "icon-192.png",
