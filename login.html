@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Connect - Login</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 12px;
+            width: 350px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0ea5e9;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0284c7;
+        }
+
+        .error {
+            color: #ffdddd;
+            background: rgba(255, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .toggle {
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <h2 id="title">Entrar</h2>
+
+        <div id="error" class="error">Usuário ou senha incorretos</div>
+
+        <input type="text" id="nome" placeholder="Nome completo" style="display:none;">
+        <select id="tipo" style="display:none;">
+            <option value="">Selecione o tipo</option>
+            <option value="cliente">Cliente</option>
+            <option value="profissional">Profissional</option>
+        </select>
+
+        <input type="text" id="user" placeholder="Usuário">
+        <input type="password" id="pass" placeholder="Senha">
+
+        <button onclick="acao()">Entrar</button>
+
+        <div class="toggle" onclick="toggleCadastro()" id="toggleText">Criar conta</div>
+    </div>
+
+    <script>
+        let modoCadastro = false;
+
+        function toggleCadastro() {
+            modoCadastro = !modoCadastro;
+
+            document.getElementById("nome").style.display = modoCadastro ? "block" : "none";
+            document.getElementById("tipo").style.display = modoCadastro ? "block" : "none";
+
+            document.getElementById("title").innerText = modoCadastro ? "Criar Conta" : "Entrar";
+            document.getElementById("toggleText").innerText = modoCadastro ? "Já tenho conta" : "Criar conta";
+        }
+
+        function acao() {
+            const user = document.getElementById("user").value;
+            const pass = document.getElementById("pass").value;
+
+            if (modoCadastro) {
+                cadastrar(user, pass);
+            } else {
+                login(user, pass);
+            }
+        }
+
+        function cadastrar(user, pass) {
+            const nome = document.getElementById("nome").value;
+            const tipo = document.getElementById("tipo").value;
+
+            if (!nome || !tipo || !user || !pass) {
+                alert("Preencha todos os campos");
+                return;
+            }
+
+            let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            usuarios.push({ nome, tipo, user, pass });
+
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+            alert("Conta criada com sucesso!");
+            toggleCadastro();
+        }
+
+        function login(user, pass) {
+            let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+            const encontrado = usuarios.find(u => u.user === user && u.pass === pass);
+
+            if (!encontrado) {
+                document.getElementById("error").style.display = "block";
+                return;
+            }
+
+            localStorage.setItem("logado", "true");
+            localStorage.setItem("tipo", encontrado.tipo);
+            localStorage.setItem("nome", encontrado.nome);
+
+            if (encontrado.tipo === "cliente") {
+                window.location.href = "dashboard-cliente.html";
+            } else {
+                window.location.href = "dashboard-profissional.html";
+            }
+        }
+    </script>
+
+</body>
+</html>
