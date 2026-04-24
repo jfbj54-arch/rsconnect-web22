@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Connect - Profissional</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #0369a1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0369a1;
+        }
+
+        .servico {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .aceitar {
+            background: #16a34a;
+        }
+
+        .aceitar:hover {
+            background: #15803d;
+        }
+
+        .recusar {
+            background: #dc2626;
+        }
+
+        .recusar:hover {
+            background: #b91c1c;
+        }
+
+        .status-btn {
+            background: #0ea5e9;
+            margin-top: 10px;
+        }
+
+        .status-btn:hover {
+            background: #0284c7;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            color: #ef4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("logado") || localStorage.getItem("tipo") !== "profissional") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <header>RS Connect - Profissional</header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Serviços Disponíveis</h2>
+            <div id="disponiveis"></div>
+        </div>
+
+        <div class="card">
+            <h2>Meus Serviços</h2>
+            <div id="meus"></div>
+        </div>
+
+        <div class="logout" onclick="sair()">Sair</div>
+
+    </div>
+
+    <script>
+        function carregar() {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            const nomeProf = localStorage.getItem("nome");
+
+            const disponiveis = document.getElementById("disponiveis");
+            const meus = document.getElementById("meus");
+
+            disponiveis.innerHTML = "";
+            meus.innerHTML = "";
+
+            servicos.forEach((s, index) => {
+
+                // Serviços aguardando profissional
+                if (s.status === "Aguardando profissional") {
+                    disponiveis.innerHTML += `
+                        <div class="servico">
+                            <strong>Cliente:</strong> ${s.cliente}<br>
+                            <strong>Serviço:</strong> ${s.categoria}<br>
+                            <strong>Endereço:</strong> ${s.endereco}<br>
+                            <strong>Descrição:</strong> ${s.descricao}<br><br>
+
+                            <button class="aceitar" onclick="aceitar(${index})">Aceitar</button>
+                            <button class="recusar" onclick="recusar(${index})">Recusar</button>
+                        </div>
+                    `;
+                }
+
+                // Serviços aceitos pelo profissional
+                if (s.profissional === nomeProf) {
+                    meus.innerHTML += `
+                        <div class="servico">
+                            <strong>Cliente:</strong> ${s.cliente}<br>
+                            <strong>Serviço:</strong> ${s.categoria}<br>
+                            <strong>Status:</strong> ${s.status}<br>
+                            <strong>Endereço:</strong> ${s.endereco}<br>
+                            <strong>Descrição:</strong> ${s.descricao}<br><br>
+
+                            ${s.status !== "Concluído" ? `
+                                <button class="status-btn" onclick="atualizar(${index}, 'A caminho')">A caminho</button>
+                                <button class="status-btn" onclick="atualizar(${index}, 'Em execução')">Em execução</button>
+                                <button class="status-btn" onclick="atualizar(${index}, 'Concluído')">Concluir</button>
+                            ` : ""}
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function aceitar(i) {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            servicos[i].status = "Profissional aceitou";
+            servicos[i].profissional = localStorage.getItem("nome");
+            localStorage.setItem("servicos", JSON.stringify(servicos));
+            carregar();
+        }
+
+        function recusar(i) {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            servicos[i].status = "Aguardando profissional";
+            localStorage.setItem("servicos", JSON.stringify(servicos));
+            carregar();
+        }
+
+        function atualizar(i, status) {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            servicos[i].status = status;
+            localStorage.setItem("servicos", JSON.stringify(servicos));
+            carregar();
+        }
+
+        function sair() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        carregar();
+    </script>
+
+</body>
+</html>

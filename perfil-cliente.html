@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Connect - Perfil do Cliente</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #0ea5e9;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0284c7;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            color: #ef4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("logado") || localStorage.getItem("tipo") !== "cliente") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <header>Meu Perfil</header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Dados do Cliente</h2>
+
+            <input type="text" id="nome" placeholder="Nome completo">
+            <input type="text" id="user" placeholder="Usuário">
+            <input type="password" id="pass" placeholder="Senha">
+
+            <button onclick="salvar()">Salvar Alterações</button>
+        </div>
+
+        <div class="logout" onclick="voltar()">Voltar</div>
+
+    </div>
+
+    <script>
+        function carregar() {
+            let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+            let nomeLogado = localStorage.getItem("nome");
+
+            const user = usuarios.find(u => u.nome === nomeLogado);
+
+            if (user) {
+                document.getElementById("nome").value = user.nome;
+                document.getElementById("user").value = user.user;
+                document.getElementById("pass").value = user.pass;
+            }
+        }
+
+        function salvar() {
+            let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+            let nomeLogado = localStorage.getItem("nome");
+
+            const index = usuarios.findIndex(u => u.nome === nomeLogado);
+
+            usuarios[index].nome = document.getElementById("nome").value;
+            usuarios[index].user = document.getElementById("user").value;
+            usuarios[index].pass = document.getElementById("pass").value;
+
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+            localStorage.setItem("nome", usuarios[index].nome);
+
+            alert("Dados atualizados com sucesso!");
+        }
+
+        function voltar() {
+            window.location.href = "dashboard-cliente.html";
+        }
+
+        carregar();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Connect - Histórico do Profissional</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #0369a1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0369a1;
+        }
+
+        .item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            color: #ef4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("logado") || localStorage.getItem("tipo") !== "profissional") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <header>Histórico de Serviços</header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Serviços Concluídos</h2>
+            <div id="lista"></div>
+        </div>
+
+        <div class="logout" onclick="sair()">Voltar</div>
+
+    </div>
+
+    <script>
+        function carregar() {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            const nome = localStorage.getItem("nome");
+            const lista = document.getElementById("lista");
+
+            lista.innerHTML = "";
+
+            servicos
+                .filter(s => s.profissional === nome && s.status === "Concluído")
+                .forEach(s => {
+                    lista.innerHTML += `
+                        <div class="item">
+                            <strong>Serviço:</strong> ${s.categoria}<br>
+                            <strong>Cliente:</strong> ${s.cliente}<br>
+                            <strong>Endereço:</strong> ${s.endereco}<br>
+                            <strong>Descrição:</strong> ${s.descricao}<br>
+                            <strong>Status:</strong> ${s.status}
+                        </div>
+                    `;
+                });
+        }
+
+        function sair() {
+            window.location.href = "dashboard-profissional.html";
+        }
+
+        carregar();
+    </script>
+
+</body>
+</html>

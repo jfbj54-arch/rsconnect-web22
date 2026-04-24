@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RS Connect - Cliente</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+        }
+
+        header {
+            background: #0ea5e9;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0ea5e9;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0284c7;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            color: #ef4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("logado") || localStorage.getItem("tipo") !== "cliente") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <header>RS Connect - Cliente</header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Solicitar Serviço</h2>
+
+            <select id="categoria">
+                <option value="">Selecione o tipo de profissional</option>
+                <option value="Carga e descarga">Carga e descarga</option>
+                <option value="Zeladoria">Zeladoria</option>
+                <option value="Segurança">Segurança</option>
+                <option value="Operador logístico">Operador logístico</option>
+                <option value="Operador de empilhadeira">Operador de empilhadeira</option>
+                <option value="Separador">Separador</option>
+                <option value="Conferente">Conferente</option>
+                <option value="Construção civil">Construção civil</option>
+            </select>
+
+            <input type="text" id="endereco" placeholder="Endereço do serviço">
+            <textarea id="descricao" placeholder="Descreva o serviço" rows="4"></textarea>
+
+            <button onclick="solicitar()">Chamar Profissional</button>
+        </div>
+
+        <div class="card">
+            <h2>Solicitações em andamento</h2>
+            <div id="lista"></div>
+        </div>
+
+        <div class="logout" onclick="sair()">Sair</div>
+
+    </div>
+
+    <script>
+        function solicitar() {
+            const categoria = document.getElementById("categoria").value;
+            const endereco = document.getElementById("endereco").value;
+            const descricao = document.getElementById("descricao").value;
+
+            if (!categoria || !endereco || !descricao) {
+                alert("Preencha todos os campos");
+                return;
+            }
+
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+
+            servicos.push({
+                cliente: localStorage.getItem("nome"),
+                categoria,
+                endereco,
+                descricao,
+                status: "Aguardando profissional"
+            });
+
+            localStorage.setItem("servicos", JSON.stringify(servicos));
+
+            alert("Solicitação enviada!");
+            carregar();
+        }
+
+        function carregar() {
+            let servicos = JSON.parse(localStorage.getItem("servicos")) || [];
+            const lista = document.getElementById("lista");
+
+            lista.innerHTML = "";
+
+            servicos
+                .filter(s => s.cliente === localStorage.getItem("nome"))
+                .forEach(s => {
+                    lista.innerHTML += `
+                        <div style="padding:10px;border-bottom:1px solid #ddd;">
+                            <strong>Serviço:</strong> ${s.categoria}<br>
+                            <strong>Status:</strong> ${s.status}<br>
+                            <strong>Endereço:</strong> ${s.endereco}<br>
+                            <strong>Descrição:</strong> ${s.descricao}
+                        </div>
+                    `;
+                });
+        }
+
+        function sair() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        carregar();
+    </script>
+
+</body>
+</html>
