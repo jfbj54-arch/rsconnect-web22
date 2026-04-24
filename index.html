@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RS Connect</title>
 
+    <!-- Manifest para PWA -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Ícones -->
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <meta name="theme-color" content="#0ea5e9">
+
     <style>
         body {
             margin: 0;
@@ -72,6 +81,13 @@
     <script>
         function entrar() {
             window.location.href = "login.html";
+        }
+
+        // Registrar o Service Worker
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js")
+                .then(() => console.log("Service Worker registrado"))
+                .catch(err => console.log("Erro ao registrar SW:", err));
         }
     </script>
 
