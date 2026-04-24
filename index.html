@@ -12,7 +12,6 @@
     <link rel="icon" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-    <!-- Cor da barra superior -->
     <meta name="theme-color" content="#0ea5e9">
 
     <style>
@@ -53,10 +52,20 @@
             color: white;
             cursor: pointer;
             transition: 0.3s;
+            margin-top: 10px;
         }
 
         button:hover {
             background-color: #0369a1;
+        }
+
+        #installBtn {
+            display: none;
+            background-color: #22c55e;
+        }
+
+        #installBtn:hover {
+            background-color: #15803d;
         }
     </style>
 </head>
@@ -66,6 +75,11 @@
     <div class="container">
         <h1>RS Connect</h1>
         <p>Serviços profissionais sob demanda</p>
+
+        <!-- BOTÃO DE INSTALAR APP -->
+        <button id="installBtn">Instalar App</button>
+
+        <!-- BOTÃO DE ENTRAR -->
         <button onclick="entrar()">Entrar no Sistema</button>
     </div>
 
@@ -74,12 +88,29 @@
             window.location.href = "login.html";
         }
 
-        // Registrar o Service Worker
+        // Registrar Service Worker
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js")
-                .then(() => console.log("SW registrado"))
-                .catch(err => console.log("Erro SW:", err));
+            navigator.serviceWorker.register("sw.js");
         }
+
+        // Lógica do botão de instalar
+        let deferredPrompt;
+        const installBtn = document.getElementById("installBtn");
+
+        window.addEventListener("beforeinstallprompt", (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = "block"; // MOSTRA O BOTÃO
+        });
+
+        installBtn.addEventListener("click", async () => {
+            installBtn.style.display = "none";
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const choice = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            }
+        });
     </script>
 
 </body>
