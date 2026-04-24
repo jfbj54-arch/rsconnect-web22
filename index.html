@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RS Connect</title>
 
-    <!-- Manifest para ativar instalação -->
+    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
 
     <!-- Ícones -->
@@ -60,12 +60,16 @@
         }
 
         #installBtn {
-            display: none;
             background-color: #22c55e;
+            display: none;
         }
 
         #installBtn:hover {
             background-color: #15803d;
+        }
+
+        #enterBtn {
+            display: none;
         }
     </style>
 </head>
@@ -76,11 +80,11 @@
         <h1>RS Connect</h1>
         <p>Serviços profissionais sob demanda</p>
 
-        <!-- BOTÃO DE INSTALAR APP -->
+        <!-- BOTÃO INSTALAR -->
         <button id="installBtn">Instalar App</button>
 
-        <!-- BOTÃO DE ENTRAR -->
-        <button onclick="entrar()">Entrar no Sistema</button>
+        <!-- BOTÃO ENTRAR -->
+        <button id="enterBtn" onclick="entrar()">Entrar no Sistema</button>
     </div>
 
     <script>
@@ -93,22 +97,38 @@
             navigator.serviceWorker.register("sw.js");
         }
 
-        // Lógica do botão de instalar
         let deferredPrompt;
         const installBtn = document.getElementById("installBtn");
+        const enterBtn = document.getElementById("enterBtn");
 
+        // Detecta se está rodando como app instalado
+        const isInstalled = window.matchMedia('(display-mode: standalone)').matches 
+                            || window.navigator.standalone === true;
+
+        if (isInstalled) {
+            // App já instalado → mostra ENTRAR
+            enterBtn.style.display = "block";
+        }
+
+        // Evento de instalação disponível
         window.addEventListener("beforeinstallprompt", (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installBtn.style.display = "block"; // MOSTRA O BOTÃO
+            if (!isInstalled) {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBtn.style.display = "block"; // mostra botão instalar
+            }
         });
 
+        // Clique no botão instalar
         installBtn.addEventListener("click", async () => {
             installBtn.style.display = "none";
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const choice = await deferredPrompt.userChoice;
+                await deferredPrompt.userChoice;
                 deferredPrompt = null;
+
+                // Depois de instalar → mostra ENTRAR
+                enterBtn.style.display = "block";
             }
         });
     </script>
