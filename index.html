@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RS Connect</title>
 
-    <!-- Manifest -->
     <link rel="manifest" href="manifest.json">
-
-    <!-- Ícones -->
     <link rel="icon" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
-
     <meta name="theme-color" content="#0ea5e9">
 
     <style>
@@ -48,15 +44,10 @@
             font-size: 16px;
             border: none;
             border-radius: 8px;
-            background-color: #0ea5e9;
-            color: white;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #0369a1;
+            color: white;
         }
 
         #installBtn {
@@ -69,7 +60,12 @@
         }
 
         #enterBtn {
+            background-color: #0ea5e9;
             display: none;
+        }
+
+        #enterBtn:hover {
+            background-color: #0369a1;
         }
     </style>
 </head>
@@ -80,10 +76,7 @@
         <h1>RS Connect</h1>
         <p>Serviços profissionais sob demanda</p>
 
-        <!-- BOTÃO INSTALAR -->
         <button id="installBtn">Instalar App</button>
-
-        <!-- BOTÃO ENTRAR -->
         <button id="enterBtn" onclick="entrar()">Entrar no Sistema</button>
     </div>
 
@@ -92,7 +85,6 @@
             window.location.href = "login.html";
         }
 
-        // Registrar Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("sw.js");
         }
@@ -101,33 +93,28 @@
         const installBtn = document.getElementById("installBtn");
         const enterBtn = document.getElementById("enterBtn");
 
-        // Detecta se está rodando como app instalado
-        const isInstalled = window.matchMedia('(display-mode: standalone)').matches 
-                            || window.navigator.standalone === true;
+        const isInstalled =
+            window.matchMedia('(display-mode: standalone)').matches ||
+            navigator.standalone === true;
 
         if (isInstalled) {
-            // App já instalado → mostra ENTRAR
             enterBtn.style.display = "block";
         }
 
-        // Evento de instalação disponível
         window.addEventListener("beforeinstallprompt", (e) => {
             if (!isInstalled) {
                 e.preventDefault();
                 deferredPrompt = e;
-                installBtn.style.display = "block"; // mostra botão instalar
+                installBtn.style.display = "block";
             }
         });
 
-        // Clique no botão instalar
         installBtn.addEventListener("click", async () => {
             installBtn.style.display = "none";
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 await deferredPrompt.userChoice;
                 deferredPrompt = null;
-
-                // Depois de instalar → mostra ENTRAR
                 enterBtn.style.display = "block";
             }
         });
