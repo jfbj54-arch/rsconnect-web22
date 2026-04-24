@@ -13,41 +13,65 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
             height: 100vh;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #0ea5e9, #0369a1);
-            animation: gradientMove 8s infinite alternate;
+            background: linear-gradient(135deg, #0ea5e9, #0369a1, #0824c7);
+            background-size: 300% 300%;
+            animation: gradientMove 10s ease infinite;
         }
 
         @keyframes gradientMove {
-            0% { background: linear-gradient(135deg, #0ea5e9, #0369a1); }
-            100% { background: linear-gradient(135deg, #0824c7, #0c4a6e); }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .container {
+        .card {
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 30px;
             text-align: center;
             background: rgba(255, 255, 255, 0.15);
-            padding: 40px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
             color: white;
-            width: 90%;
-            max-width: 400px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            background: url("icon-192.png") center/cover no-repeat;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        p {
+            margin: 10px 0 25px;
+            font-size: 16px;
+            opacity: 0.9;
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 16px;
+            width: 100%;
+            padding: 14px;
+            font-size: 17px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
+            transition: 0.25s;
             color: white;
+            font-weight: 600;
         }
 
         #installBtn {
@@ -72,11 +96,13 @@
 
 <body>
 
-    <div class="container">
+    <div class="card">
+        <div class="logo"></div>
+
         <h1>RS Connect</h1>
         <p>Serviços profissionais sob demanda</p>
 
-        <button id="installBtn">Instalar App</button>
+        <button id="installBtn">Instalar Aplicativo</button>
         <button id="enterBtn" onclick="entrar()">Entrar no Sistema</button>
     </div>
 
