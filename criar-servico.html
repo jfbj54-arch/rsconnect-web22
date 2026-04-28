@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Serviço - RS Connect</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #0ea5e9, #0369a1, #0824c7);
+        background-size: 300% 300%;
+        animation: gradientMove 10s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 26px;
+        background: linear-gradient(90deg, #ffffff, #dbeafe);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    label {
+        font-weight: 600;
+        margin-top: 15px;
+        display: block;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: none;
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    textarea {
+        height: 90px;
+        resize: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 20px;
+        background: #22c55e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    button:hover {
+        background: #15803d;
+        transform: scale(1.03);
+    }
+
+    .msg {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: 600;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Criar Serviço</h2>
+
+    <label>Categoria</label>
+    <select id="categoria">
+        <option value="">Selecione...</option>
+        <option>Eletricista</option>
+        <option>Encanador</option>
+        <option>Pedreiro</option>
+        <option>Diarista</option>
+        <option>Técnico de Informática</option>
+        <option>Outro</option>
+    </select>
+
+    <label>Descrição</label>
+    <textarea id="descricao" placeholder="Descreva o serviço..."></textarea>
+
+    <label>Preço (R$)</label>
+    <input type="number" id="preco" placeholder="Ex: 80">
+
+    <label>Endereço</label>
+    <input type="text" id="endereco" placeholder="Rua, número, bairro">
+
+    <button onclick="criarServico()">Enviar Serviço</button>
+
+    <div class="msg" id="msg"></div>
+</div>
+
+<script>
+function criarServico() {
+    const categoria = document.getElementById("categoria").value;
+    const descricao = document.getElementById("descricao").value;
+    const preco = document.getElementById("preco").value;
+    const endereco = document.getElementById("endereco").value;
+    const msg = document.getElementById("msg");
+
+    if (!categoria || !descricao || !preco || !endereco) {
+        msg.style.color = "yellow";
+        msg.textContent = "Preencha todos os campos";
+        return;
+    }
+
+    // Aqui você envia para o Firestore futuramente
+    const servico = {
+        categoria,
+        descricao,
+        preco: Number(preco),
+        endereco,
+        status: "pendente",
+        criadoEm: new Date().toISOString()
+    };
+
+    console.log("Serviço criado:", servico);
+
+    msg.style.color = "#22c55e";
+    msg.textContent = "Serviço enviado com sucesso";
+
+    // Limpar campos
+    document.getElementById("categoria").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("preco").value = "";
+    document.getElementById("endereco").value = "";
+}
+</script>
+
+</body>
+</html>

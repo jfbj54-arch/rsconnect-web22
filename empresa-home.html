@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel da Empresa - RS Connect</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #0ea5e9, #0369a1, #0824c7);
+        background-size: 300% 300%;
+        animation: gradientMove 10s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        animation: fadeIn 1s ease forwards;
+        text-align: center;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+        margin-top: 0;
+        font-size: 28px;
+        background: linear-gradient(90deg, #ffffff, #dbeafe);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 15px;
+        background: #0ea5e9;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    button:hover {
+        background: #0369a1;
+        transform: scale(1.03);
+    }
+
+    .logout {
+        background: #ef4444;
+    }
+
+    .logout:hover {
+        background: #b91c1c;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Painel da Empresa</h2>
+
+    <p>Bem-vindo ao RS Connect</p>
+
+    <button onclick="window.location.href='criar-servico.html'">
+        Criar Novo Serviço
+    </button>
+
+    <button onclick="window.location.href='servicos-empresa.html'">
+        Ver Serviços Criados
+    </button>
+
+    <button class="logout" onclick="sair()">
+        Sair
+    </button>
+</div>
+
+<script>
+function sair() {
+    // Aqui você coloca o logout do Firebase futuramente
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

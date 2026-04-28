@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel do Colaborador - RS Connect</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #0ea5e9, #0369a1, #0824c7);
+        background-size: 300% 300%;
+        animation: gradientMove 10s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        padding: 30px;
+        border-radius: 20px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.97); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 26px;
+        background: linear-gradient(90deg, #ffffff, #dbeafe);
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .servico {
+        background: rgba(255,255,255,0.2);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .servico p {
+        margin: 5px 0;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        background: #22c55e;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    button:hover {
+        background: #15803d;
+        transform: scale(1.03);
+    }
+
+    .logout {
+        background: #ef4444;
+    }
+
+    .logout:hover {
+        background: #b91c1c;
+    }
+
+    .msg {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>Serviços Disponíveis</h2>
+
+    <div id="listaServicos">
+        <!-- Serviços aparecem aqui -->
+    </div>
+
+    <button class="logout" onclick="sair()">Sair</button>
+
+    <div class="msg" id="msg"></div>
+</div>
+
+<script>
+// Serviços de exemplo (depois substituímos pelo Firestore)
+const servicosFake = [
+    {
+        id: "srv001",
+        categoria: "Eletricista",
+        descricao: "Trocar disjuntor",
+        preco: 80,
+        endereco: "Rua A, 123"
+    },
+    {
+        id: "srv002",
+        categoria: "Encanador",
+        descricao: "Consertar vazamento",
+        preco: 120,
+        endereco: "Rua B, 45"
+    }
+];
+
+function carregarServicos() {
+    const lista = document.getElementById("listaServicos");
+    lista.innerHTML = "";
+
+    servicosFake.forEach(s => {
+        const div = document.createElement("div");
+        div.className = "servico";
+
+        div.innerHTML = `
+            <p><strong>Categoria:</strong> ${s.categoria}</p>
+            <p><strong>Descrição:</strong> ${s.descricao}</p>
+            <p><strong>Preço:</strong> R$ ${s.preco}</p>
+            <p><strong>Endereço:</strong> ${s.endereco}</p>
+            <button onclick="aceitarServico('${s.id}')">Aceitar Serviço</button>
+        `;
+
+        lista.appendChild(div);
+    });
+}
+
+function aceitarServico(id) {
+    const msg = document.getElementById("msg");
+    msg.style.color = "#22c55e";
+    msg.textContent = "Serviço aceito com sucesso";
+
+    console.log("Colaborador aceitou o serviço:", id);
+
+    // Aqui você vai atualizar o Firestore futuramente
+}
+
+function sair() {
+    window.location.href = "login.html";
+}
+
+carregarServicos();
+</script>
+
+</body>
+</html>
