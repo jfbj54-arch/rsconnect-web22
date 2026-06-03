@@ -1,9 +1,10 @@
 {
   "name": "RS Connect",
   "short_name": "RSConnect",
-  "start_url": "/rsconnect-web22/index.html",
+  "start_url": "/rsconnect-web22/",
   "scope": "/rsconnect-web22/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0ea5e9",
   "theme_color": "#0ea5e9",
   "description": "Serviços profissionais sob demanda",
@@ -11,12 +12,14 @@
     {
       "src": "/rsconnect-web22/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/rsconnect-web22/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
