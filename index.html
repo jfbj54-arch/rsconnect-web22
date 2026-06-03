@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RS Connect</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon-192.png">
-    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="manifest" href="/rsconnect-web22/manifest.json">
+    <link rel="icon" href="/rsconnect-web22/icon-192.png">
+    <link rel="apple-touch-icon" href="/rsconnect-web22/icon-192.png">
     <meta name="theme-color" content="#0ea5e9">
 
     <style>
@@ -29,7 +29,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Splash Screen */
         #splash {
             position: fixed;
             top: 0;
@@ -73,7 +72,6 @@
             to { opacity: 0; visibility: hidden; }
         }
 
-        /* Card principal */
         .card {
             width: 90%;
             max-width: 380px;
@@ -98,7 +96,7 @@
             height: 90px;
             border-radius: 20px;
             margin-bottom: 20px;
-            background: url("icon-192.png") center/cover no-repeat;
+            background: url("/rsconnect-web22/icon-192.png") center/cover no-repeat;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
@@ -153,13 +151,11 @@
 
 <body>
 
-    <!-- Splash Screen -->
     <div id="splash">
-        <img src="icon-192.png">
+        <img src="/rsconnect-web22/icon-192.png">
         <h1>RS Connect</h1>
     </div>
 
-    <!-- Tela principal -->
     <div class="card">
         <div class="logo"></div>
 
@@ -172,11 +168,11 @@
 
     <script>
         function entrar() {
-            window.location.href = "login.html";
+            window.location.href = "/rsconnect-web22/login.html";
         }
 
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js");
+            navigator.serviceWorker.register("/rsconnect-web22/sw.js");
         }
 
         let deferredPrompt;
